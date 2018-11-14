@@ -23,13 +23,14 @@
 #' @importFrom magrittr %>% %$%
 #' @importFrom dplyr filter mutate select left_join bind_rows
 #' @importFrom tidyr replace_na
-#' @importFrom purrr map map2 map2_chr keep discard
+#' @importFrom purrr map map2 map_chr map2_chr keep discard
 #' @importFrom stringr str_detect str_replace fixed
 #' @importFrom readr read_rds write_rds
 #' @importFrom tibble tibble
+#' @importFrom digest digest
 #'
 NULL
 
 utils::globalVariables(c("rebuild", "dest", "alg", "cur_dgst_lst",
-                         "digest", "dest_digest", "cur_digest",
+                         "dest_digest", "cur_digest",
                          "cur_dest_digest", "quiet", "dgst", "alg"))

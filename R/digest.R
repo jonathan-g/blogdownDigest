@@ -58,7 +58,7 @@ get_current_digests = function(files) {
 
   if (file.exists(digest_file)) {
     digests = read_rds(digest_file) %>%
-      mutate(file = str_replace("^~", base, digests$file)) %>%
+      mutate(file = str_replace(file, "^~", base)) %>%
       # Don't store the name of the output file because we're going to
       # merge digest with df by source file path, and df already has a dest
       # column.
@@ -77,10 +77,10 @@ get_current_digests = function(files) {
 
   df = df %>%
     mutate(cur_dgst_lst = map2(file, alg, ~digest_if_exists(.x, .y)),
-           alg = cur_dgst_lst$alg,
-           cur_digest = cur_dgst_lst$digest,
+           alg = map_chr(cur_dgst_lst, ~.x['alg']),
+           cur_digest = map_chr(cur_dgst_lst, ~.x['digest']),
            cur_dest_digest = map2_chr(dest, alg,
-                                      ~digest_if_exists(.x, .y)$digest)) %>%
+                                      ~digest_if_exists(.x, .y)['digest'])) %>%
     select(-cur_dgst_lst)
 
   # Organize columns in an aesthetically pleasing order.
@@ -114,15 +114,15 @@ update_rmd_digests = function(files, partial = FALSE) {
 
   digests = tibble(file = files, dest = blogdown:::output_file(files)) %>%
     mutate(dgst = map(file, digest_if_exists),
-           alg = dgst$alg,
-           digest = dgst$digest,
-           dest_digest = map2_chr(dest, alg, ~digest_if_exists(.x, .y)$digest),
+           alg = map_chr(dgst, ~.x['alg']),
+           digest = map_chr(dgst, ~.x['digest']),
+           dest_digest = map2_chr(dest, alg, ~digest_if_exists(.x, .y)['digest']),
            file = str_replace(file, fixed(base), "~"),
            dest = str_replace(dest, fixed(base), "~"))
 
   if (partial && file.exists(digest_file)) {
     old_digests = read_rds(digest_file) %>%
-      filter(file %in% setdiff(file, digests$file))
+      filter(file %in% setdiff(file, file))
     digests = bind_rows(digests, old_digests)
   }
 
