@@ -51,7 +51,7 @@ digest_if_exists = function(file, alg = NA) {
 #' @keywords internal
 get_current_digests = function(files) {
   base = blogdown:::site_root()
-  files = files %>% normalizePath() %>% unique() %>% keep(file.exists)
+  files = files %>% normalizePath(winslash = "/") %>% unique() %>% keep(file.exists)
   df = tibble(file = files, dest = blogdown:::output_file(files))
 
   digest_file = file.path(base, "digests.Rds")
@@ -108,7 +108,7 @@ get_current_digests = function(files) {
 #'
 update_rmd_digests = function(files, partial = FALSE) {
   base = blogdown:::site_root()
-  files = files %>% normalizePath() %>% unique() %>% keep(file.exists)
+  files = files %>% normalizePath(winslash = "/") %>% unique() %>% keep(file.exists)
 
   digest_file = file.path(base, "digests.Rds")
 
@@ -170,7 +170,7 @@ update_site_digests = function(dir = find_blog_content(), partial = FALSE) {
 #'
 prune_site_digests = function(files) {
   base = blogdown:::site_root()
-  files = files %>% normalizePath() %>% unique() %>%
+  files = files %>% normalizePath(winslash = "/") %>% unique() %>%
     str_replace(fixed(base), "~")
 
   digest_file = file.path(base, "digests.Rds")

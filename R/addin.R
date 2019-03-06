@@ -3,7 +3,7 @@
 touch_file = function() {
   ctx = rstudioapi::getSourceEditorContext()
   if (!file.exists(ctx$path)) stop('The current document has not been saved yet.')
-  p = normalizePath(ctx$path); mtime = function() file.info(p)[, 'mtime']
+  p = normalizePath(ctx$path, winslash = "/"); mtime = function() file.info(p)[, 'mtime']
   m = mtime(); check_mtime = function() {
     if (u <- !identical(m, m2 <- mtime())) message(
     )

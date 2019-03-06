@@ -49,7 +49,7 @@ needs_rebuild = function(current_digest, current_dest_digest,
 #' @keywords internal
 files_to_rebuild = function(files) {
   base = blogdown:::site_root()
-  files = files %>% normalizePath() %>%  unique() %>% keep(file.exists)
+  files = files %>% normalizePath(winslash = "/") %>%  unique() %>% keep(file.exists)
 
   df = get_current_digests(files)
 

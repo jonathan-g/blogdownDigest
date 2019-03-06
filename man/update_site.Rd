@@ -5,7 +5,8 @@
 \alias{update_dir}
 \title{Update all files that are out of date}
 \usage{
-update_site(dir = find_blog_content(), quiet = FALSE, force = FALSE)
+update_site(dir = NULL, quiet = FALSE, force = FALSE,
+  local = FALSE, method = c("html", "custom"), run_hugo = TRUE)
 
 update_dir(dir = ".", force = FALSE, ignore = NA)
 }
@@ -18,6 +19,15 @@ function emits an informational message about how many files will
 be rebuit.}
 
 \item{force}{Force rebuilding source files that are not out of date.}
+
+\item{local}{Whether to build the website locally to be served via
+\code{\link{serve_site}()}.}
+
+\item{method}{Different methods to build a website (each with pros and cons).
+See \code{\link[blogdown]{build_site}()} for details.}
+
+\item{run_hugo}{Whether to run \code{hugo_build()} after R Markdown files are
+compiled.}
 
 \item{ignore}{A regular expression pattern for files to ignore.}
 }
@@ -46,6 +56,6 @@ After rendering any out-of-date files, regenerate the digest list
 and saves it to a file.
 }
 \seealso{
-\code{\link{build_site}()}, \code{\link{build_dir}()},
+\code{\link[blogdown]{build_site}()}, \code{\link[blogdown]{build_dir}()},
 \code{\link{digests}}.
 }

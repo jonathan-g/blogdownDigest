@@ -23,17 +23,41 @@
 #' function emits an informational message about how many files will
 #' be rebuit.
 #' @param force Force rebuilding source files that are not out of date.
+#' @param method Different methods to build a website (each with pros and cons).
+#'     See \code{\link[blogdown]{build_site}()} for details.
+#' @inheritParams blogdown::build_site
 #' @return This function does not return anything
-#' @seealso \code{\link{build_site}()}, \code{\link{build_dir}()},
+#' @seealso \code{\link[blogdown]{build_site}()}, \code{\link[blogdown]{build_dir}()},
 #' \code{\link{digests}}.
 #' @export
-update_site = function(dir = find_blog_content(), quiet = FALSE, force = FALSE) {
-  files = blogdown:::list_rmds(dir)
+update_site = function(dir = NULL, quiet = FALSE, force = FALSE,
+                       local = FALSE, method = c("html", "custom"), run_hugo = TRUE) {
+  old_wd = getwd()
+  setwd(here::here())
+  on.exit(setwd(old_wd))
+  if (is.null(dir)) {
+    dir = find_blog_content()
+  }
+
+  cd = str_c(normalizePath(getwd(), winslash = "/"), "/")
+  dir = normalizePath(dir, winslash = "/")
+  dir = str_replace(dir, fixed(cd), "")
+  # message("Dir = ", dir, ", cd = ", cd, ", d = ", d)
+
+  if (missing(method))
+    method = getOption("blogdown.method", method)
+  method = match.arg(method)
+  on.exit(blogdown:::run_script("R/build.R", as.character(local)), add = TRUE, after = FALSE)
+  if (method == "custom")
+    return()
+  files = blogdown:::list_rmds(dir, TRUE)
   if (force) {
     to_build = files
   } else {
     to_build = files_to_rebuild(files)
   }
+  to_build = str_replace(normalizePath(to_build, winslash = "/"), fixed(cd), "")
+  # message("To build: ", str_c(to_build, collapse = ", "))
 
   if (! quiet) {
     message("Building ", length(to_build), " out of date ",
@@ -43,6 +67,11 @@ update_site = function(dir = find_blog_content(), quiet = FALSE, force = FALSE) 
             " in total.")
   }
   blogdown:::build_rmds(to_build)
+  if (run_hugo)
+    on.exit(setwd(cd), add = TRUE, after = TRUE)
+    on.exit(hugo_build(local), add = TRUE, after = TRUE)
+    on.exit(setwd(old_wd), add = TRUE, after = TRUE)
+  # message("On exit stack: ", deparse(sys.on.exit()))
   update_rmd_digests(files)
 }
 
@@ -63,7 +92,7 @@ update_dir = function(dir = '.', force = FALSE, ignore = NA) {
     }
   }
 
-  files = blogdown:::list_rmds(dir)
+  files = blogdown:::list_rmds(dir, TRUE)
   if (! is.na(ignore))
     files = files %>% discard(~str_detect(.x, ignore))
 
