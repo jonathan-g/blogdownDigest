@@ -33,13 +33,13 @@
 update_site = function(dir = NULL, quiet = FALSE, force = FALSE,
                        local = FALSE, method = c("html", "custom"), run_hugo = TRUE) {
   old_wd = getwd()
-  setwd(here::here())
+  setwd(blogdown:::site_root())
   on.exit(setwd(old_wd))
   if (is.null(dir)) {
     dir = find_blog_content()
   }
 
-  cd = str_c(normalizePath(getwd(), winslash = "/"), "/")
+  cd = paste0(normalizePath(getwd(), winslash = "/"), "/")
   dir = normalizePath(dir, winslash = "/")
   dir = str_replace(dir, fixed(cd), "")
   # message("Dir = ", dir, ", cd = ", cd, ", d = ", d)
