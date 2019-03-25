@@ -10,12 +10,12 @@
 #'
 #' @section License:
 #'
-#'  The \pkg{kayadata} package is open source licensed under the
+#'  The \pkg{blogdownDigest} package is open source licensed under the
 #'  MIT License.
 #'
 #' @section Bug reports:
 #' \itemize{
-#'  \item kayadata issue tracker (\url{https://github.com/jonathan-g/kayadata/issues})
+#'  \item blogdownDigest issue tracker (\url{https://github.com/jonathan-g/blogdownDigest/issues})
 #' }
 #'
 #'
