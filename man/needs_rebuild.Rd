@@ -4,8 +4,7 @@
 \alias{needs_rebuild}
 \title{Check which files need to be rebuilt}
 \usage{
-needs_rebuild(current_digest, current_dest_digest, old_digest,
-  old_dest_digest)
+needs_rebuild(current_digest, current_dest_digest, old_digest, old_dest_digest)
 }
 \arguments{
 \item{current_digest}{A character vector containing digests of the

@@ -1,7 +1,7 @@
 Package: blogdownDigest
 Type: Package
 Title: Extends Blogdown to Track Changed Source Files using Digests
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: c( person("Jonathan", "Gilligan", 
               email = "jonathan.gilligan@vanderbilt.edu", 
               comment = c(ORCID = "0000-0003-1375-6686"),
@@ -9,6 +9,7 @@ Authors@R: c( person("Jonathan", "Gilligan",
 Description: An extension of the blogdown package that uses hash digests of
     files instead of modification times to determine which RMarkdown source 
     files have changed and need to be rebuilt.
+Language: en-US
 License: MIT + file LICENSE
 Depends:
   blogdown
@@ -25,4 +26,4 @@ Suggests:
   rstudioapi
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2

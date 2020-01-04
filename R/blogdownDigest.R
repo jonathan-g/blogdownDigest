@@ -1,7 +1,7 @@
-#' blogdownDiges: A package that extends blogdown to use hash digests to track
+#' blogdownDigest: A package that extends blogdown to use hash digests to track
 #' changed source files.
 #'
-#' The blogdownDigest pacakge extends blogdown to use hash digests to track
+#' The blogdownDigest package extends blogdown to use hash digests to track
 #' changed source files. This works more reliably than using file modification
 #' timestamps to figure out which files need to be rebuilt.
 #'

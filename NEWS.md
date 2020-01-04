@@ -1,3 +1,7 @@
+# CHANGES IN blogdownDigest VERSION 0.1.3
+
+Bug fix for the `partial` argument to `update_rmd_digests`.
+
 # CHANGES IN blogdownDigest VERSION 0.1.1
 
 ## BUG FIXES

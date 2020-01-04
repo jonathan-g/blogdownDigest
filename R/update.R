@@ -21,7 +21,7 @@
 #' By default, the "content" directory of the project.
 #' @param quiet Suppress output. By default this is \code{FALSE} and the
 #' function emits an informational message about how many files will
-#' be rebuit.
+#' be rebuilt.
 #' @param force Force rebuilding source files that are not out of date.
 #' @param method Different methods to build a website (each with pros and cons).
 #'     See \code{\link[blogdown]{build_site}()} for details.
@@ -82,7 +82,7 @@ update_site = function(dir = NULL, quiet = FALSE, force = FALSE,
 #' @rdname update_site
 #' @inheritParams update_site
 #' @param ignore A regular expression pattern for files to ignore.
-update_dir = function(dir = '.', force = FALSE, ignore = NA) {
+update_dir = function(dir = '.', force = FALSE, ignore = NA_character_) {
   if (! dir.exists(dir)) {
     new_dir = file.path(find_blog_content(), dir)
     if (! dir.exists(new_dir)) {

@@ -11,15 +11,15 @@
 #' \code{NA}.
 #' @seealso \code{\link{digest}} for details about available algorithms.
 #' @keywords internal
-digest_if_exists = function(file, alg = NA) {
+digest_if_exists = function(file, alg = NA_character_) {
   if (file.exists(file)) {
     if (is.na(alg)) {
       alg = get_digest_algorithm()
     }
     dgst = digest::digest(file, file = TRUE, algo = alg)
   } else {
-    dgst = as.character(NA)
-    alg = as.character(NA)
+    dgst = NA_character_
+    alg = NA_character_
   }
   c(digest = dgst, alg = alg)
 }
@@ -70,9 +70,9 @@ get_current_digests = function(files) {
     # If there isn't a digest file, then the site has not been updated
     # previously, so we store NA's and build the whole site.
     df <- df %>% mutate(
-      digest = as.character(NA),
-      dest_digest = as.character(NA),
-      alg = as.character(NA))
+      digest = NA_character_,
+      dest_digest = NA_character_,
+      alg = NA_character_)
   }
 
   df = df %>%
@@ -122,7 +122,7 @@ update_rmd_digests = function(files, partial = FALSE) {
 
   if (partial && file.exists(digest_file)) {
     old_digests = read_rds(digest_file) %>%
-      filter(file %in% setdiff(file, file))
+      filter(! file %in% digests$file)
     digests = bind_rows(digests, old_digests)
   }
 

@@ -5,10 +5,16 @@
 \alias{update_dir}
 \title{Update all files that are out of date}
 \usage{
-update_site(dir = NULL, quiet = FALSE, force = FALSE,
-  local = FALSE, method = c("html", "custom"), run_hugo = TRUE)
+update_site(
+  dir = NULL,
+  quiet = FALSE,
+  force = FALSE,
+  local = FALSE,
+  method = c("html", "custom"),
+  run_hugo = TRUE
+)
 
-update_dir(dir = ".", force = FALSE, ignore = NA)
+update_dir(dir = ".", force = FALSE, ignore = NA_character_)
 }
 \arguments{
 \item{dir}{A string containing the root directory for checking.
@@ -16,12 +22,12 @@ By default, the "content" directory of the project.}
 
 \item{quiet}{Suppress output. By default this is \code{FALSE} and the
 function emits an informational message about how many files will
-be rebuit.}
+be rebuilt.}
 
 \item{force}{Force rebuilding source files that are not out of date.}
 
 \item{local}{Whether to build the website locally to be served via
-\code{\link{serve_site}()}.}
+\code{\link[blogdown]{serve_site}()}.}
 
 \item{method}{Different methods to build a website (each with pros and cons).
 See \code{\link[blogdown]{build_site}()} for details.}

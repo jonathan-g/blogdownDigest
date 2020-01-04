@@ -4,7 +4,7 @@
 \alias{digest_if_exists}
 \title{Calculate the file digest if the file exists}
 \usage{
-digest_if_exists(file, alg = NA)
+digest_if_exists(file, alg = NA_character_)
 }
 \arguments{
 \item{file}{A string containing the path to a file.}
