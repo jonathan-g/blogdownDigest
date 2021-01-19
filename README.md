@@ -1,8 +1,10 @@
 # blogdownDigest
 
+<!-- badges: start -->
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![CRAN status](https://www.r-pkg.org/badges/version/blogdownDigest)](https://cran.r-project.org/package=blogdownDigest)
-[![Travis build status](https://travis-ci.org/jonathan-g/blogdownDigest.svg?branch=master)](https://travis-ci.org/jonathan-g/blogdownDigest)
+[![R-CMD-check](https://github.com/jonathan-g/blogdownDigest/workflows/R-CMD-check/badge.svg)](https://github.com/jonathan-g/blogdownDigest/actions)
+<!-- badges: end -->
 
 An extension of the blogdown package that uses hash digests of
 files instead of modification times to determine which RMarkdown source 
@@ -14,7 +16,7 @@ You can install blogdownDigest from [GitHub](https://github.com/jonathan-g/blogd
 
 ``` r
 library(remotes)
-install_github("jonathan-g/blogdownDiges")
+install_github("jonathan-g/blogdownDigest")
 ```
 
 <!--You can install the released version of blogdownDigest from [CRAN](https://CRAN.R-project.org) with:

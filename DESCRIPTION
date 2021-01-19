@@ -2,6 +2,7 @@ Package: blogdownDigest
 Type: Package
 Title: Extends Blogdown to Track Changed Source Files using Digests
 Version: 0.1.4
+Date: "2021-01-19"
 Authors@R: c( person("Jonathan", "Gilligan", 
               email = "jonathan.gilligan@vanderbilt.edu", 
               comment = c(ORCID = "0000-0003-1375-6686"),
@@ -11,19 +12,23 @@ Description: An extension of the blogdown package that uses hash digests of
     files have changed and need to be rebuilt.
 Language: en-US
 License: MIT + file LICENSE
+URL: https://jonathan-g.github.io/blogdownDigest/,
+     https://github.com/jonathan-g/blogdownDigest
+BugReports: https://github.com/jonathan-g/blogdownDigest/issues
 Depends:
-  blogdown
+  R (>= 4.0),
+  blogdown (>= 1.1)
 Imports:
-  dplyr,
-  tidyr,
-  purrr,
-  stringr,
-  magrittr,
-  readr,
-  tibble,
-  digest
+  dplyr (>= 1.0),
+  tidyr (>= 1.0),
+  purrr (>= 0.3),
+  stringr (>= 1.4),
+  magrittr (>= 2.0),
+  readr (>= 1.4),
+  tibble (>= 3.0),
+  digest (>= 0.6)
 Suggests:
-  rstudioapi
+  rstudioapi (>= 0.13)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1

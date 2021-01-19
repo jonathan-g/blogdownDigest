@@ -1,0 +1,13 @@
+destination: docs
+url: https://jonathan-g.github.io/blogdownDigest
+
+home:
+  title: Use File Digests to Rebuild Out-of-date Blogdown Pages
+author:
+  Jonathan Gilligan:
+    href: https://www.jonathangilligan.org/
+template:
+  params:
+    bootswatch: cerulean
+development:
+  mode: auto
