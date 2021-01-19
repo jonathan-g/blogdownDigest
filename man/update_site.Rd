@@ -10,7 +10,6 @@ update_site(
   quiet = FALSE,
   force = FALSE,
   local = FALSE,
-  method = c("html", "custom"),
   run_hugo = TRUE
 )
 
@@ -29,9 +28,6 @@ be rebuilt.}
 \item{local}{Whether to build the website locally. This argument is passed to
 \code{\link[blogdown]{hugo_build}()}, and \code{local = TRUE} is mainly for serving
 the site locally via \code{\link[blogdown]{serve_site}()}.}
-
-\item{method}{Different methods to build a website (each with pros and cons).
-See \code{\link[blogdown]{build_site}()} for details.}
 
 \item{run_hugo}{Whether to run \code{hugo_build()} after R Markdown files are
 compiled.}

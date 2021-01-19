@@ -23,15 +23,17 @@
 #' function emits an informational message about how many files will
 #' be rebuilt.
 #' @param force Force rebuilding source files that are not out of date.
-#' @param method Different methods to build a website (each with pros and cons).
-#'     See \code{\link[blogdown]{build_site}()} for details.
+#'
 #' @inheritParams blogdown::build_site
+#'
 #' @return This function does not return anything
+#'
 #' @seealso \code{\link[blogdown]{build_site}()}, \code{\link[blogdown]{build_dir}()},
 #' \code{\link{digests}}.
+#'
 #' @export
 update_site <- function(dir = NULL, quiet = FALSE, force = FALSE,
-                       local = FALSE, method = c("html", "custom"), run_hugo = TRUE) {
+                       local = FALSE, run_hugo = TRUE) {
   old_wd <- getwd()
   setwd(blogdown:::site_root())
   on.exit(setwd(old_wd))
@@ -44,20 +46,10 @@ update_site <- function(dir = NULL, quiet = FALSE, force = FALSE,
   dir <- str_replace(dir, fixed(cd), "")
   # message("Dir = ", dir, ", cd = ", cd, ", d = ", d)
 
-  if (missing(method)) {
+  method <- getOption("blogdown.method")
+  if (is.na(method)) {
     method <- "html"
-    m <- getOption("blogdown.method")
-    if (! is.na(m)) {
-      m <- str_to_lower(m)
-      if (m %in% c("html", "custom")) {
-        method <- m
-      }
-    }
-    if (! method %in% c("html", "custom")) {
-      stop("ERROR: unknown rendering method ", method)
-    }
   }
-  method <- match.arg(method)
   on.exit(blogdown:::run_script("R/build.R", as.character(local)), add = TRUE,
           after = FALSE)
   if (method == "custom")
