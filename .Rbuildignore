@@ -1,5 +1,6 @@
 ^\.travis\.yml$
 ^LICENSE\.md$
+^LICENCE$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.github$
