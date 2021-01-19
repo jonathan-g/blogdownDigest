@@ -31,7 +31,7 @@ NULL
 #' @return A string containing the absolute path of the root directory for the
 #' site.
 #' @keywords internal
-find_blog_content = function() {
+find_blog_content <- function() {
   file.path(blogdown:::site_root(), "content")
 }
 
@@ -45,6 +45,6 @@ find_blog_content = function() {
 #' @return A string containing the name of the algorithm.
 #' @seealso \code{\link{digests}}.
 #' @keywords internal
-get_digest_algorithm = function() {
+get_digest_algorithm <- function() {
   getOption("blogdownDigest.hash.algorithm", default = "crc32")
 }

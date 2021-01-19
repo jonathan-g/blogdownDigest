@@ -30,33 +30,45 @@
 #' @seealso \code{\link[blogdown]{build_site}()}, \code{\link[blogdown]{build_dir}()},
 #' \code{\link{digests}}.
 #' @export
-update_site = function(dir = NULL, quiet = FALSE, force = FALSE,
+update_site <- function(dir = NULL, quiet = FALSE, force = FALSE,
                        local = FALSE, method = c("html", "custom"), run_hugo = TRUE) {
-  old_wd = getwd()
+  old_wd <- getwd()
   setwd(blogdown:::site_root())
   on.exit(setwd(old_wd))
   if (is.null(dir)) {
-    dir = find_blog_content()
+    dir <- find_blog_content()
   }
 
-  cd = paste0(normalizePath(getwd(), winslash = "/"), "/")
-  dir = normalizePath(dir, winslash = "/")
-  dir = str_replace(dir, fixed(cd), "")
+  cd <- paste0(normalizePath(getwd(), winslash = "/"), "/")
+  dir <- normalizePath(dir, winslash = "/")
+  dir <- str_replace(dir, fixed(cd), "")
   # message("Dir = ", dir, ", cd = ", cd, ", d = ", d)
 
-  if (missing(method))
-    method = getOption("blogdown.method", method)
-  method = match.arg(method)
-  on.exit(blogdown:::run_script("R/build.R", as.character(local)), add = TRUE, after = FALSE)
+  if (missing(method)) {
+    method <- "html"
+    m <- getOption("blogdown.method")
+    if (! is.na(m)) {
+      m <- str_to_lower(m)
+      if (m %in% c("html", "custom")) {
+        method <- m
+      }
+    }
+    if (! method %in% c("html", "custom")) {
+      stop("ERROR: unknown rendering method ", method)
+    }
+  }
+  method <- match.arg(method)
+  on.exit(blogdown:::run_script("R/build.R", as.character(local)), add = TRUE,
+          after = FALSE)
   if (method == "custom")
     return()
-  files = blogdown:::list_rmds(dir, TRUE)
+  files <- blogdown:::list_rmds(dir, TRUE)
   if (force) {
-    to_build = files
+    to_build <- files
   } else {
-    to_build = files_to_rebuild(files)
+    to_build <- files_to_rebuild(files)
   }
-  to_build = str_replace(normalizePath(to_build, winslash = "/"), fixed(cd), "")
+  to_build <- str_replace(normalizePath(to_build, winslash = "/"), fixed(cd), "")
   # message("To build: ", str_c(to_build, collapse = ", "))
 
   if (! quiet) {
@@ -82,24 +94,25 @@ update_site = function(dir = NULL, quiet = FALSE, force = FALSE,
 #' @rdname update_site
 #' @inheritParams update_site
 #' @param ignore A regular expression pattern for files to ignore.
-update_dir = function(dir = '.', force = FALSE, ignore = NA_character_) {
+update_dir <- function(dir = '.', quiet = FALSE, force = FALSE,
+                       ignore = NA_character_) {
   if (! dir.exists(dir)) {
-    new_dir = file.path(find_blog_content(), dir)
+    new_dir <- file.path(find_blog_content(), dir)
     if (! dir.exists(new_dir)) {
       stop("Directory does not exist: ", dir)
     } else {
-      dir = new_dir
+      dir <- new_dir
     }
   }
 
-  files = blogdown:::list_rmds(dir, TRUE)
+  files <- blogdown:::list_rmds(dir, TRUE)
   if (! is.na(ignore))
-    files = files %>% discard(~str_detect(.x, ignore))
+    files <- files %>% discard(~str_detect(.x, ignore))
 
   if (force) {
-    to_build = files
+    to_build <- files
   } else {
-    to_build = files_to_rebuild(files)
+    to_build <- files_to_rebuild(files)
   }
 
   if (! quiet) {

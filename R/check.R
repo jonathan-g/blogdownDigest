@@ -27,11 +27,11 @@
 #' then the file needs to be rebuilt.
 #' @seealso \code{\link{digests}}.
 #' @keywords internal
-needs_rebuild = function(current_digest, current_dest_digest,
+needs_rebuild <- function(current_digest, current_dest_digest,
                          old_digest, old_dest_digest) {
-  out_of_date = current_digest != old_digest |
+  out_of_date <- current_digest != old_digest |
     current_dest_digest !=  old_dest_digest
-  out_of_date = replace_na(out_of_date, TRUE)
+  out_of_date <- replace_na(out_of_date, TRUE)
   out_of_date
 }
 
@@ -47,14 +47,14 @@ needs_rebuild = function(current_digest, current_dest_digest,
 #' @return A character vector of files that need to be rebuilt.
 #' @seealso \code{\link{get_current_digests}()}, \code{\link{digests}}.
 #' @keywords internal
-files_to_rebuild = function(files) {
-  base = blogdown:::site_root()
-  files = files %>% normalizePath(winslash = "/") %>%  unique() %>% keep(file.exists)
+files_to_rebuild <- function(files) {
+  base <- blogdown:::site_root()
+  files <- files %>% normalizePath(winslash = "/") %>%  unique() %>% keep(file.exists)
 
-  df = get_current_digests(files)
+  df <- get_current_digests(files)
 
-  df$rebuild = needs_rebuild(df$cur_digest, df$cur_dest_digest,
+  df$rebuild <- needs_rebuild(df$cur_digest, df$cur_dest_digest,
                              df$digest, df$dest_digest)
-  df %>% filter(rebuild) %$% file
+  df %>% filter(.data$rebuild) %$% file
 }
 

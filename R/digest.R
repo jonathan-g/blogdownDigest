@@ -11,15 +11,15 @@
 #' \code{NA}.
 #' @seealso \code{\link{digest}} for details about available algorithms.
 #' @keywords internal
-digest_if_exists = function(file, alg = NA_character_) {
+digest_if_exists <- function(file, alg = NA_character_) {
   if (file.exists(file)) {
     if (is.na(alg)) {
-      alg = get_digest_algorithm()
+      alg <- get_digest_algorithm()
     }
-    dgst = digest::digest(file, file = TRUE, algo = alg)
+    dgst <- digest::digest(file, file = TRUE, algo = alg)
   } else {
-    dgst = NA_character_
-    alg = NA_character_
+    dgst <- NA_character_
+    alg <- NA_character_
   }
   c(digest = dgst, alg = alg)
 }
@@ -49,23 +49,23 @@ digest_if_exists = function(file, alg = NA_character_) {
 #' @seealso \code{\link{files_to_rebuild}()},
 #' \code{\link{digest_if_exists}()}, \code{\link{digests}}.
 #' @keywords internal
-get_current_digests = function(files) {
-  base = blogdown:::site_root()
-  files = files %>% normalizePath(winslash = "/") %>% unique() %>% keep(file.exists)
-  df = tibble(file = files, dest = blogdown:::output_file(files))
+get_current_digests <- function(files) {
+  base <- blogdown:::site_root()
+  files <- files %>% normalizePath(winslash = "/") %>% unique() %>% keep(file.exists)
+  df <- tibble(file = files, dest = blogdown:::output_file(files))
 
-  digest_file = file.path(base, "digests.Rds")
+  digest_file <- file.path(base, "digests.Rds")
 
   if (file.exists(digest_file)) {
-    digests = read_rds(digest_file) %>%
-      mutate(file = str_replace(file, "^~", base)) %>%
+    digests <- read_rds(digest_file) %>%
+      mutate(file = str_replace(.data$file, "^~", base)) %>%
       # Don't store the name of the output file because we're going to
       # merge digest with df by source file path, and df already has a dest
       # column.
-      select(-dest)
+      select(-"dest")
 
     # left join: we only want to check digests for the specified files.
-    df = left_join(df, digests, by = "file")
+    df <- left_join(df, digests, by = "file")
   } else {
     # If there isn't a digest file, then the site has not been updated
     # previously, so we store NA's and build the whole site.
@@ -75,17 +75,20 @@ get_current_digests = function(files) {
       alg = NA_character_)
   }
 
-  df = df %>%
-    mutate(cur_dgst_lst = map2(file, alg, ~digest_if_exists(.x, .y)),
-           alg = map_chr(cur_dgst_lst, ~.x['alg']),
-           cur_digest = map_chr(cur_dgst_lst, ~.x['digest']),
-           cur_dest_digest = map2_chr(dest, alg,
-                                      ~digest_if_exists(.x, .y)['digest'])) %>%
-    select(-cur_dgst_lst)
+  if (nrow(df) > 0) {
+    df <- df %>%
+      mutate(cur_dgst_lst = map2(.data$file, .data$alg,
+                                 ~digest_if_exists(.x, .y)),
+             alg = map_chr(.data$cur_dgst_lst, ~.x['alg']),
+             cur_digest = map_chr(.data$cur_dgst_lst, ~.x['digest']),
+             cur_dest_digest = map2_chr(.data$dest, .data$alg,
+                                        ~digest_if_exists(.x, .y)['digest'])) %>%
+      select(-"cur_dgst_lst")
+  }
 
   # Organize columns in an aesthetically pleasing order.
-  df = df %>% select(file, dest, alg, digest, dest_digest,
-                     cur_digest, cur_dest_digest)
+  df <- df %>% select("file", "dest", "alg", "digest", "dest_digest",
+                     "cur_digest", "cur_dest_digest")
   invisible(df)
 }
 
@@ -106,24 +109,25 @@ get_current_digests = function(files) {
 #' @seealso \code{\link{update_site_digests}()}, \code{\link{digests}}.
 #' @keywords internal
 #'
-update_rmd_digests = function(files, partial = FALSE) {
-  base = blogdown:::site_root()
-  files = files %>% normalizePath(winslash = "/") %>% unique() %>% keep(file.exists)
+update_rmd_digests <- function(files, partial = FALSE) {
+  base <- blogdown:::site_root()
+  files <- files %>% normalizePath(winslash = "/") %>% unique() %>% keep(file.exists)
 
-  digest_file = file.path(base, "digests.Rds")
+  digest_file <- file.path(base, "digests.Rds")
 
-  digests = tibble(file = files, dest = blogdown:::output_file(files)) %>%
-    mutate(dgst = map(file, digest_if_exists),
-           alg = map_chr(dgst, ~.x['alg']),
-           digest = map_chr(dgst, ~.x['digest']),
-           dest_digest = map2_chr(dest, alg, ~digest_if_exists(.x, .y)['digest']),
-           file = str_replace(file, fixed(base), "~"),
-           dest = str_replace(dest, fixed(base), "~"))
+  digests <- tibble(file = files, dest = blogdown:::output_file(files)) %>%
+    mutate(dgst = map(.data$file, digest_if_exists),
+           alg = map_chr(.data$dgst, ~.x['alg']),
+           digest = map_chr(.data$dgst, ~.x['digest']),
+           dest_digest = map2_chr(.data$dest, .data$alg,
+                                  ~digest_if_exists(.x, .y)['digest']),
+           file = str_replace(.data$file, fixed(base), "~"),
+           dest = str_replace(.data$dest, fixed(base), "~"))
 
   if (partial && file.exists(digest_file)) {
-    old_digests = read_rds(digest_file) %>%
-      filter(! file %in% digests$file)
-    digests = bind_rows(digests, old_digests)
+    old_digests <- read_rds(digest_file) %>%
+      filter(! .data$file %in% digests$file)
+    digests <- bind_rows(digests, old_digests)
   }
 
   write_rds(digests, digest_file)
@@ -150,7 +154,7 @@ update_rmd_digests = function(files, partial = FALSE) {
 #' \code{\link{digests}}.
 #' @export
 #'
-update_site_digests = function(dir = find_blog_content(), partial = FALSE) {
+update_site_digests <- function(dir = find_blog_content(), partial = FALSE) {
   blogdown:::list_rmds(dir) %>% update_rmd_digests(partial) %>%
     invisible()
 }
@@ -168,16 +172,16 @@ update_site_digests = function(dir = find_blog_content(), partial = FALSE) {
 #' @seealso \code{\link{update_site_digests}()}, \code{\link{digests}}.
 #' @export
 #'
-prune_site_digests = function(files) {
-  base = blogdown:::site_root()
-  files = files %>% normalizePath(winslash = "/") %>% unique() %>%
+prune_site_digests <- function(files) {
+  base <- blogdown:::site_root()
+  files <- files %>% normalizePath(winslash = "/") %>% unique() %>%
     str_replace(fixed(base), "~")
 
-  digest_file = file.path(base, "digests.Rds")
+  digest_file <- file.path(base, "digests.Rds")
 
   if (length(files) && file.exists(digest_file)) {
-    digests = read_rds(digest_file) %>%
-      filter(! file %in% files)
+    digests <- read_rds(digest_file) %>%
+      filter(! .data$file %in% files)
     write_rds(digests, digest_file)
   }
 

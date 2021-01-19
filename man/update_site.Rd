@@ -14,7 +14,7 @@ update_site(
   run_hugo = TRUE
 )
 
-update_dir(dir = ".", force = FALSE, ignore = NA_character_)
+update_dir(dir = ".", quiet = FALSE, force = FALSE, ignore = NA_character_)
 }
 \arguments{
 \item{dir}{A string containing the root directory for checking.
@@ -26,8 +26,9 @@ be rebuilt.}
 
 \item{force}{Force rebuilding source files that are not out of date.}
 
-\item{local}{Whether to build the website locally to be served via
-\code{\link[blogdown]{serve_site}()}.}
+\item{local}{Whether to build the website locally. This argument is passed to
+\code{\link[blogdown]{hugo_build}()}, and \code{local = TRUE} is mainly for serving
+the site locally via \code{\link[blogdown]{serve_site}()}.}
 
 \item{method}{Different methods to build a website (each with pros and cons).
 See \code{\link[blogdown]{build_site}()} for details.}
