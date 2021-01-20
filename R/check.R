@@ -28,7 +28,7 @@
 #' @seealso \code{\link{digests}}.
 #' @keywords internal
 needs_rebuild <- function(current_digest, current_dest_digest,
-                         old_digest, old_dest_digest) {
+                          old_digest, old_dest_digest) {
   out_of_date <- current_digest != old_digest |
     current_dest_digest !=  old_dest_digest
   out_of_date <- replace_na(out_of_date, TRUE)
@@ -37,7 +37,7 @@ needs_rebuild <- function(current_digest, current_dest_digest,
 
 #' Figure out which files need to be rebuilt
 #'
-#' \code{files_to_rebuild} returns a vector of files that need to be rebuilt.
+#' \code{filter_needs_rebuild} returns a vector of files that need to be rebuilt.
 #'
 #' This function accepts a vector of source files and
 #' returns a vector of files that need to be rebuilt because the source file is
@@ -47,14 +47,40 @@ needs_rebuild <- function(current_digest, current_dest_digest,
 #' @return A character vector of files that need to be rebuilt.
 #' @seealso \code{\link{get_current_digests}()}, \code{\link{digests}}.
 #' @keywords internal
-files_to_rebuild <- function(files) {
+filter_needs_rebuild <- function(files) {
   base <- blogdown:::site_root()
   files <- files %>% normalizePath(winslash = "/") %>%  unique() %>% keep(file.exists)
 
   df <- get_current_digests(files)
 
   df$rebuild <- needs_rebuild(df$cur_digest, df$cur_dest_digest,
-                             df$digest, df$dest_digest)
+                              df$digest, df$dest_digest)
   df %>% filter(.data$rebuild) %$% file
 }
 
+#' Find Rmd Files that Need Rebuilding.
+#'
+#' @param dir A directory to start in.
+#'
+#' @return A list of out-of-date RMarkdown files.
+#'
+#' @export
+files_to_rebuild <- function(dir = NULL) {
+  old_wd <- getwd()
+  setwd(blogdown:::site_root())
+  on.exit(setwd(old_wd))
+  if (is.null(dir)) {
+    dir <- find_blog_content()
+  }
+
+  cd <- paste0(normalizePath(getwd(), winslash = "/"), "/")
+  dir <- normalizePath(dir, winslash = "/")
+  dir <- str_replace(dir, fixed(cd), "")
+  # message("Dir = ", dir, ", cd = ", cd, ", d = ", d)
+
+  files <- blogdown:::list_rmds(dir, TRUE) %>%
+    filter_needs_rebuild() %>%
+    normalizePath(winslash = "/") %>%
+    str_replace(fixed(cd), "")
+  files
+}

@@ -58,7 +58,7 @@ update_site <- function(dir = NULL, quiet = FALSE, force = FALSE,
   if (force) {
     to_build <- files
   } else {
-    to_build <- files_to_rebuild(files)
+    to_build <- filter_needs_rebuild(files)
   }
   to_build <- str_replace(normalizePath(to_build, winslash = "/"), fixed(cd), "")
   # message("To build: ", str_c(to_build, collapse = ", "))
@@ -104,7 +104,7 @@ update_dir <- function(dir = '.', quiet = FALSE, force = FALSE,
   if (force) {
     to_build <- files
   } else {
-    to_build <- files_to_rebuild(files)
+    to_build <- filter_needs_rebuild(files)
   }
 
   if (! quiet) {

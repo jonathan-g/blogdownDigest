@@ -46,8 +46,11 @@ digest_if_exists <- function(file, alg = NA_character_) {
 #' }
 #'
 #' Digests for missing files are set to \code{NA}.
-#' @seealso \code{\link{files_to_rebuild}()},
-#' \code{\link{digest_if_exists}()}, \code{\link{digests}}.
+#'
+#' @seealso \code{\link{filter_needs_rebuild}},
+#' \code{\link{files_to_rebuild}}
+#' \code{\link{digest_if_exists}}, \code{\link{digests}}.
+#'
 #' @keywords internal
 get_current_digests <- function(files) {
   base <- blogdown:::site_root()

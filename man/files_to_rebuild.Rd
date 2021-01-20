@@ -2,25 +2,16 @@
 % Please edit documentation in R/check.R
 \name{files_to_rebuild}
 \alias{files_to_rebuild}
-\title{Figure out which files need to be rebuilt}
+\title{Find Rmd Files that Need Rebuilding.}
 \usage{
-files_to_rebuild(files)
+files_to_rebuild(dir = NULL)
 }
 \arguments{
-\item{files}{A character vector of paths to source files (e.g., \code{.Rmd}).}
+\item{dir}{A directory to start in.}
 }
 \value{
-A character vector of files that need to be rebuilt.
+A list of out-of-date RMarkdown files.
 }
 \description{
-\code{files_to_rebuild} returns a vector of files that need to be rebuilt.
+Find Rmd Files that Need Rebuilding.
 }
-\details{
-This function accepts a vector of source files and
-returns a vector of files that need to be rebuilt because the source file is
-new or has changed since the last time the site was built.
-}
-\seealso{
-\code{\link{get_current_digests}()}, \code{\link{digests}}.
-}
-\keyword{internal}
