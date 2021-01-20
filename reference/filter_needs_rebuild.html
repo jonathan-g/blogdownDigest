@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Find Rmd Files that Need Rebuilding. — files_to_rebuild • blogdownDigest</title>
+<title>Figure out which files need to be rebuilt — filter_needs_rebuild • blogdownDigest</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Find Rmd Files that Need Rebuilding. — files_to_rebuild" />
-<meta property="og:description" content="Find Rmd Files that Need Rebuilding." />
+<meta property="og:title" content="Figure out which files need to be rebuilt — filter_needs_rebuild" />
+<meta property="og:description" content="filter_needs_rebuild returns a vector of files that need to be rebuilt." />
 
 
 
@@ -111,29 +111,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Find Rmd Files that Need Rebuilding.</h1>
+    <h1>Figure out which files need to be rebuilt</h1>
     <small class="dont-index">Source: <a href='https://github.com/jonathan-g/blogdownDigest/blob/master/R/check.R'><code>R/check.R</code></a></small>
-    <div class="hidden name"><code>files_to_rebuild.Rd</code></div>
+    <div class="hidden name"><code>filter_needs_rebuild.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Find Rmd Files that Need Rebuilding.</p>
+    <p><code>filter_needs_rebuild</code> returns a vector of files that need to be rebuilt.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>files_to_rebuild</span><span class='op'>(</span>dir <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>filter_needs_rebuild</span><span class='op'>(</span><span class='va'>files</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dir</th>
-      <td><p>A directory to start in.</p></td>
+      <th>files</th>
+      <td><p>A character vector of paths to source files (e.g., <code>.Rmd</code>).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of out-of-date RMarkdown files.</p>
+    <p>A character vector of files that need to be rebuilt.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This function accepts a vector of source files and
+returns a vector of files that need to be rebuilt because the source file is
+new or has changed since the last time the site was built.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='get_current_digests.html'>get_current_digests</a>()</code>, <code><a href='digests.html'>digests</a></code>.</p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
